@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block custom_style %}
+    <link href="{% static 'main.css' %}" type="text/css" media="all" rel="stylesheet"/>
     <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet"/>
     <link href="{% static 'plugins/css/semantic.min.css' %}" type="text/css" media="all" rel="stylesheet"/>
     <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet"/>
@@ -9,12 +10,6 @@
 {% endblock %}
 
 {% block custom_scripts %}
-    <script>
-        $("#send").click(function () {
-            console.log('kek');
-            $("form").submit();
-        })
-    </script>
     <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
     <script type="text/javascript" src="{% static 'plugins/js/semantic.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
@@ -32,14 +27,14 @@
 
 {% block content %}
     <div class="container-fluid">
-        <div class="row" style="margin-top: 5vh">
+        <div class="row">
             <div class="col-md-2">
                 {% include "reports/creation-bar.html" %}
             </div>
-            <div class="col-md-10">
+            <div class="col-md-10 ma-2">
                 <div class="container-fluid">
                     <h1>Создание отчета</h1>
-                    <form action="create" method="post" id="form">
+                    <form action="{% url "create" %}" method="post" id="form">
                         <div class="form-group">
                             <label for="id_name">Название (Краткое описание)</label><input type="text" name="name"
                                                                                            maxlength="40"
@@ -67,9 +62,7 @@
                             <option value="{{ x }}">{{ y }}</option>
                         {% endfor %}
                     </select>
-                        <div class="form-group">
-                            <button type="submit" id="send" class="btn btn-primary">Отправить</button>
-                        </div>
+                        <button type="submit" id="send" class="btn btn-primary ma-2">Отправить</button>
                     </form>
                 </div>
             </div>

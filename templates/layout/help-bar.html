@@ -1,47 +1,34 @@
 <div class="card">
     <div class="card-body">
         <h4>Статусы отчетов</h4>
-        <span class="badge badge-W">W</span> - В очереди на рассмотрение
-        <br>
-        <span class="badge badge-L">L</span> - Рассматривается
-        <br>
-        <span class="badge badge-D">D</span> - Отклонен
-        <br>
-        <span class="badge badge-A">A</span> - Принят
-        <br>
-        <span class="badge badge-F">F</span> - Исправлен
+        {% include "reports/status-badge.html" with name='W' desc='В очереди на рассмотрение' %}
+        {% include "reports/status-badge.html" with name='L' desc='Рассматривается' %}
+        {% include "reports/status-badge.html" with name='D' desc='Отклонен' %}
+        {% include "reports/status-badge.html" with name='A' desc='Принят' %}
+        {% include "reports/status-badge.html" with name='F' desc='Исправлено' %}
 
-        <h4 style="margin-top: 2vh">Статистика</h4>
+        <h4 class="ma-2">Статистика</h4>
         <p class="card-text">
-            Всего отчетов: {{ total }}<br>
-            Исправлено по отчетам: {{ fixed }}<br>
+            Отчетов: {{ total }}<br>
+            {% if not filters %}
+                Исправлено по отчетам: {{ fixed }}<br>
+            {% endif %}
             Ваших отчетов: {{ your }}
         </p>
     </div>
 </div>
 
-{% comment %} <div class="card" style="margin-top: 2vh; text-align: center">
-    <div class="card-body">
-        {% if user.is_staff %}
-            <a class="text-muted" href="{% url 'admin:index' %}">
-                <button type="button" class="btn btn-light">Управление</button>
-            </a>
-        {% endif %}
-    </div>
-</div>
-{% endcomment %}
-
-<div class="card" style="margin-top: 2vh; text-align: center">
-    <form action="/create">
+<div class="card ma-2" style="text-align: center">
+    <form action="{% url "create" %}">
         <input type="submit" style="width: 100%; border-radius: 0" class="btn btn-dark" value="Создать отчет">
     </form>
     <div class="btn-group" role="group">
 
-        <button type="button" onclick="window.location.href = '/?page={{ request.GET.page|add:-1 }}'" class="btn"
+        <button type="button" onclick="prev_page()" class="btn"
                 style="border-radius: 0">Назад
         </button>
 
-        <button type="button" class="btn" onclick="window.location.href = '/?page={{ request.GET.page|add:1 }}'"
+        <button type="button" class="btn" onclick="next_page()"
                 style="border-radius: 0">Далее
         </button>
     </div>

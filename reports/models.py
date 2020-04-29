@@ -16,6 +16,9 @@ class Comment(models.Model):
     id = models.BigAutoField(primary_key=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.id) + "@" + str(self.author.nick)
+
 
 class Report(models.Model):
     name = models.CharField(max_length=40)
@@ -26,7 +29,7 @@ class Report(models.Model):
     id = models.BigAutoField(primary_key=True, auto_created=True, verbose_name='id')
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     open = models.DateTimeField(default=timezone.now)
-    comments = models.ManyToManyField(Comment)
+    comments = models.ManyToManyField(Comment, blank=True)
 
     REPORT_STATUSES = (
         ('W', 'Ожидание'),

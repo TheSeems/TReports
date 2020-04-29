@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+q2%haz0k7((s14dcmc%r^_=ncn9&7fc*eo17q1wq-1#1h^((e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['reports.daplay.ru']
+ALLOWED_HOSTS = ['127.0.0.1']
 AUTH_USER_MODEL = 'users.CustomUser'
 
 # Application definition
@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'django_markup',
     'martor',
 
     'users',
@@ -107,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 
@@ -124,21 +123,20 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, "storage")
 CSRF_COOKIE_HTTPONLY = False
-
 
 # Martor settings
 # Global martor settings
 # Input: string boolean, `true/false`
 MARTOR_ENABLE_CONFIGS = {
-    'emoji': 'true',        # to enable/disable emoji icons.
-    'imgur': 'true',        # to enable/disable imgur/custom uploader.
-    'mention': 'false',     # to enable/disable mention
-    'jquery': 'true',       # to include/revoke jquery (require for admin default django)
-    'living': 'false',      # to enable/disable live updates in preview
+    'emoji': 'true',  # to enable/disable emoji icons.
+    'imgur': 'true',  # to enable/disable imgur/custom uploader.
+    'mention': 'false',  # to enable/disable mention
+    'jquery': 'true',  # to include/revoke jquery (require for admin default django)
+    'living': 'false',  # to enable/disable live updates in preview
     'spellcheck': 'false',  # to enable/disable spellcheck in form textareas
-    'hljs': 'true',         # to enable/disable hljs highlighting in preview
+    'hljs': 'true',  # to enable/disable hljs highlighting in preview
 }
 
 # To setup the martor editor with label or not (default is False)
@@ -146,14 +144,14 @@ MARTOR_ENABLE_LABEL = False
 
 # Imgur API Keys
 MARTOR_IMGUR_CLIENT_ID = '0e10510c6567f87'
-MARTOR_IMGUR_API_KEY   = 'e98bb7015bb589b0c4341d1d26c4061ff8cbf9ed'
+MARTOR_IMGUR_API_KEY = 'e98bb7015bb589b0c4341d1d26c4061ff8cbf9ed'
 
 # Safe Mode
-MARTOR_MARKDOWN_SAFE_MODE = True # default
+MARTOR_MARKDOWN_SAFE_MODE = True  # default
 
 # Markdownify
-MARTOR_MARKDOWNIFY_FUNCTION = 'martor.utils.markdownify' # default
-MARTOR_MARKDOWNIFY_URL = '/martor/markdownify/' # default
+MARTOR_MARKDOWNIFY_FUNCTION = 'martor.utils.markdownify'  # default
+MARTOR_MARKDOWNIFY_URL = '/martor/markdownify/'  # default
 
 # Markdown extensions (default)
 MARTOR_MARKDOWN_EXTENSIONS = [
@@ -164,9 +162,9 @@ MARTOR_MARKDOWN_EXTENSIONS = [
 
     # Custom markdown extensions.
     'martor.extensions.urlize',
-    'martor.extensions.del_ins',    # ~~strikethrough~~ and ++underscores++
-    'martor.extensions.mention',    # to parse markdown mention
-    'martor.extensions.emoji',      # to parse markdown emoji
+    'martor.extensions.del_ins',  # ~~strikethrough~~ and ++underscores++
+    'martor.extensions.mention',  # to parse markdown mention
+    'martor.extensions.emoji',  # to parse markdown emoji
     'martor.extensions.mdx_video',  # to parse embed/iframe video
 ]
 
@@ -174,10 +172,10 @@ MARTOR_MARKDOWN_EXTENSIONS = [
 MARTOR_MARKDOWN_EXTENSION_CONFIGS = {}
 
 # Markdown urls
-MARTOR_UPLOAD_URL = '/martor/uploader/' # default
-MARTOR_SEARCH_USERS_URL = '/martor/search-user/' # default
+MARTOR_UPLOAD_URL = '/martor/uploader/'  # default
+MARTOR_SEARCH_USERS_URL = '/martor/search-user/'  # default
 
 # Markdown Extensions
 # MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/'     # from webfx
-MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://github.githubassets.com/images/icons/emoji/'                  # default from github
-MARTOR_MARKDOWN_BASE_MENTION_URL = 'https://reports.daplay.ru'                                      # please change this to your domain
+MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://github.githubassets.com/images/icons/emoji/'  # default from github
+MARTOR_MARKDOWN_BASE_MENTION_URL = 'https://reports.daplay.ru'  # please change this to your domain

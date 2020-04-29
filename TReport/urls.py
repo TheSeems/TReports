@@ -27,6 +27,6 @@ urlpatterns = [
     path('create', views.create_report, name='create'),
     path('martor/', include('martor.urls')),
     path('api/get', api.api_get_report),
-    path('login', login_page),
-    path('comment', make_comment)
+    path('login', login_page, name='login'),
+    path('comment', make_comment, name='comment')
 ]

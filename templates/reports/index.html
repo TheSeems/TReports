@@ -9,7 +9,7 @@
 
 {% block content %}
     <div class="container-fluid">
-        <div class="row" style="margin-top: 5vh">
+        <div class="row ma-5">
             <div class="col-md-3">{% include "layout/help-bar.html" %}</div>
             <div class="col-md-9">
                 <h1>Последние отчеты{% if request.GET.page %} <small>стр. {{ request.GET.page }}</small>{% endif %}</h1>
@@ -19,4 +19,40 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block custom_scripts %}
+    <script>
+        function next_page() {
+            const url = new URL(window.location.href);
+            url.searchParams.set('page', {% if request.GET.page %}{{ request.GET.page|add:1 }}{% else %}2{% endif %});
+            window.location.href = url.href;
+        }
+
+        function prev_page() {
+            const url = new URL(window.location.href);
+            url.searchParams.set('page', {% if request.GET.page %}{{ request.GET.page|add:-1 }}{% else %}0{% endif %});
+            window.location.href = url.href;
+        }
+
+        function toggle_filter(name) {
+            const url = new URL(window.location.href);
+            if (!url.searchParams.has("status")) {
+                url.searchParams.set("status", name);
+            } else {
+                let arr = url.searchParams.get('status').split(',');
+                if (arr.includes(name)) {
+                    arr = arr.filter(function (value) {
+                        return value !== name;
+                    })
+                } else {
+                    arr = arr.concat(name);
+                }
+
+                url.searchParams.set("status", arr.join(',').toString())
+            }
+
+            window.location.href = url.href
+        }
+    </script>
 {% endblock %}

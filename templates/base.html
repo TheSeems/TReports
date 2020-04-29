@@ -1,12 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" href="/static/favicon.ico" type="image/ico">
-
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/ico">
     <title>{% block title %}{% endblock %} | Отчёты </title>
 
     <!-- Styles -->
@@ -16,18 +15,6 @@
 
     <!-- Additional -->
     {% block custom_style %}{% endblock %} {% if google_analytics_code %}
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104388212-2"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-        gtag('config', '{{ google_analytics_code }}');
-    </script>
 {% endif %}
 
 </head>
@@ -52,7 +39,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<!-- Custom --> {% block custom_scripts %}{% endblock %}
+<!-- Custom -->
+{% block custom_scripts %}{% endblock %}
 
 </body>
 

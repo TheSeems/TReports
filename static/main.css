@@ -33,6 +33,26 @@
     color: white;
 }
 
+.ma-5 {
+    margin-top: 5vh !important;
+}
+
+.ma-2 {
+    margin-top: 2vh !important;
+}
+
+.mad-5 {
+    margin-bottom: 5vh !important;
+}
+
+.inline {
+    display: inline !important;
+}
+
+.bold {
+    font-weight: bold;
+}
+
 /**
 Report
  */

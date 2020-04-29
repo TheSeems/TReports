@@ -8,13 +8,9 @@
                     href="/r/{{ report.id }}">{{ report.name }}</a></h4>
         <div class="author">Автор: {% include "reports/ucard.html" with user=report.author %}</div>
 
-        {% load i18n %}
-
-        {% language 'ru' %}
-            <p class="card-text">
-                Создано: {{ report.open }}<br>
-                Комментариев: {{ report.comments.all.count }}
-            </p>
-        {% endlanguage %}
+        <p class="card-text">
+            Создано: {{ report.open }}<br>
+            Комментариев: {{ report.comments.all.count }}
+        </p>
     </div>
 </div>

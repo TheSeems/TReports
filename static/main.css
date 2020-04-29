@@ -1,0 +1,62 @@
+.author p {
+    display: inline-block;
+}
+
+.role-100 {
+    border: 4px;
+    background-color: rgba(255, 204, 203, .5);
+    color: black;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.badge-D {
+    background-color: red;
+    color: white;
+}
+
+.badge-W {
+    background-color: gray;
+}
+
+.badge-L {
+    background-color: yellow;
+}
+
+.badge-A {
+    background-color: green;
+    color: white;
+}
+
+.badge-F {
+    background-color: blueviolet;
+    color: white;
+}
+
+/**
+Report
+ */
+.report {
+    text-align: center;
+}
+
+.report-steps {
+    margin-top: 5vh;
+}
+
+.report-head, .report-meta {
+    margin-top: 2vh;
+}
+
+.report-card {
+    margin-bottom: 2vh;
+}
+
+.role-admin {
+    opacity: 0.2;
+}
+
+img {
+	max-width: 100%;
+    max-height: 100%;
+}

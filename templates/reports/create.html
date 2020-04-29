@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block custom_style %}
+    <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet"/>
+    <link href="{% static 'plugins/css/semantic.min.css' %}" type="text/css" media="all" rel="stylesheet"/>
+    <link href="{% static 'plugins/css/resizable.min.css' %}" type="text/css" media="all" rel="stylesheet"/>
+    <link href="{% static 'martor/css/martor.min.css' %}" type="text/css" media="all" rel="stylesheet"/>
+{% endblock %}
+
+{% block custom_scripts %}
+    <script>
+        $("#send").click(function () {
+            console.log('kek');
+            $("form").submit();
+        })
+    </script>
+    <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/semantic.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/typo.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/spellcheck.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'martor/js/martor.min.js' %}"></script>
+{% endblock %}
+
+{% block title %} Создать {% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row" style="margin-top: 5vh">
+            <div class="col-md-2">
+                {% include "reports/creation-bar.html" %}
+            </div>
+            <div class="col-md-10">
+                <div class="container-fluid">
+                    <h1>Создание отчета</h1>
+                    <form action="create" method="post" id="form">
+                        <div class="form-group">
+                            <label for="id_name">Название (Краткое описание)</label><input type="text" name="name"
+                                                                                           maxlength="40"
+                                                                                           class="form-control form-control-lg"
+                                                                                           required
+                                                                                           id="id_name"/>
+                        </div>
+                        <label for="id_stpes">Шаги воспроизведения</label>
+                        {{ form.steps }}
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="id_expect">Ожидаемый результат</label>
+                            <input type="text" name="expect" class="form-control form-control-lg" maxlength="100"
+                                   required="" id="id_expect">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_fact">Фактический результат</label>
+                            <input type="text" name="fact" class="form-control form-control-lg" maxlength="100"
+                                   required="" id="id_fact">
+                        </div>
+                        <label for="id_tags">Теги</label><select name="tags" required id="id_tags"
+                                                                 class="form-control" multiple>
+                        {% for x, y in form.tags.field.choices %}
+                            <option value="{{ x }}">{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                        <div class="form-group">
+                            <button type="submit" id="send" class="btn btn-primary">Отправить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

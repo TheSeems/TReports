@@ -1,0 +1,13 @@
+{% load martortags %}
+<div class="card" style="margin-top: 1.5vh">
+    <div class="card-body">
+        <div class="author card-subtitle">
+            {% include "reports/ucard.html" with user=comment.author %}
+        </div>
+        <div class="card-text">{{ comment.content|safe_markdown }}</div>
+        {% if request.user.is_staff %}
+            <a href="{% url "admin:reports_comment_change" comment.id %}"><small class="card-text float-right">Айди
+                #{{ comment.id }}</small></a>
+        {% endif %}
+    </div>
+</div>

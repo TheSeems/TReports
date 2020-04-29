@@ -1,0 +1,3 @@
+<p>{% for role in user.role.all %}
+    {% include "reports/roles.html" with role=role %}
+{% endfor %}{{ user.nick }}</p>

@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Статусы отчетов</h4>
+        <span class="badge badge-W">W</span> - В очереди на рассмотрение
+        <br>
+        <span class="badge badge-L">L</span> - Рассматривается
+        <br>
+        <span class="badge badge-D">D</span> - Отклонен
+        <br>
+        <span class="badge badge-A">A</span> - Принят
+        <br>
+        <span class="badge badge-F">F</span> - Исправлен
+
+        <h4 style="margin-top: 2vh">Статистика</h4>
+        <p class="card-text">
+            Всего отчетов: {{ total }}<br>
+            Исправлено по отчетам: {{ fixed }}<br>
+            Ваших отчетов: {{ your }}
+        </p>
+    </div>
+</div>
+
+{% comment %} <div class="card" style="margin-top: 2vh; text-align: center">
+    <div class="card-body">
+        {% if user.is_staff %}
+            <a class="text-muted" href="{% url 'admin:index' %}">
+                <button type="button" class="btn btn-light">Управление</button>
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endcomment %}
+
+<div class="card" style="margin-top: 2vh; text-align: center">
+    <form action="/create">
+        <input type="submit" style="width: 100%; border-radius: 0" class="btn btn-dark" value="Создать отчет">
+    </form>
+    <div class="btn-group" role="group">
+
+        <button type="button" onclick="window.location.href = '/?page={{ request.GET.page|add:-1 }}'" class="btn"
+                style="border-radius: 0">Назад
+        </button>
+
+        <button type="button" class="btn" onclick="window.location.href = '/?page={{ request.GET.page|add:1 }}'"
+                style="border-radius: 0">Далее
+        </button>
+    </div>
+</div>
+

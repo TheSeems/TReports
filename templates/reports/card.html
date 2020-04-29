@@ -1,0 +1,20 @@
+<div class="card report-card">
+    <div class="card-body">
+        <h4><a href="{% url "admin:reports_report_change" report.id %}"><small>
+            #{{ report.id }}</small></a>{% for tag in report.tags.all %}
+            <span class="badge badge-dark">{{ tag }}</span>
+        {% endfor %}
+            <span class="badge badge-{{ report.status }}">{{ report.status }}</span> <a
+                    href="/r/{{ report.id }}">{{ report.name }}</a></h4>
+        <div class="author">Автор: {% include "reports/ucard.html" with user=report.author %}</div>
+
+        {% load i18n %}
+
+        {% language 'ru' %}
+            <p class="card-text">
+                Создано: {{ report.open }}<br>
+                Комментариев: {{ report.comments.all.count }}
+            </p>
+        {% endlanguage %}
+    </div>
+</div>

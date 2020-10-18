@@ -16,7 +16,7 @@ def is_int(s):
         return False
 
 
-def normalize_page(page, count=Report.objects.count(), default=1):
+def normalize_page(page, count=0, default=1):
     if page is None:
         page = default
 

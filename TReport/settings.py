@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+q2%haz0k7((s14dcmc%r^_=ncn9&7fc*eo17q1wq-1#1h^((e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -124,7 +124,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "storage")
-CSRF_COOKIE_HTTPONLY = False
 
 # Martor settings
 # Global martor settings
@@ -176,6 +175,4 @@ MARTOR_UPLOAD_URL = '/martor/uploader/'  # default
 MARTOR_SEARCH_USERS_URL = '/martor/search-user/'  # default
 
 # Markdown Extensions
-# MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/'     # from webfx
-MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://github.githubassets.com/images/icons/emoji/'  # default from github
-MARTOR_MARKDOWN_BASE_MENTION_URL = 'https://reports.daplay.ru'  # please change this to your domain
+MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/'  # from webfx

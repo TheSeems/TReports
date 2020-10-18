@@ -1,1 +1,1 @@
-web: gunicorn treports.wsgi --log-file -
+web: gunicorn TReport.wsgi --log-file -

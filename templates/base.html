@@ -12,20 +12,26 @@
     <!-- Main -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
 
     <!-- Additional -->
-    {% block custom_style %}{% endblock %} {% if google_analytics_code %}
-{% endif %}
-
+    {% block custom_style %}{% endblock %}
 </head>
 
+<!-- Navbar -->
 {% include "layout/navbar.html" %}
-<body>
 
-<!-- Messages -->
-{% if messages %} {% for message in messages %}
-    <script>alert('{% if message.tags %}{{ message.tags|title }}:{% endif %} {{ message }}');</script>
-{% endfor %} {% endif %} {% block content %}{% endblock %} {% include "layout/footer.html" %}
+<body>
+{% if messages %}
+    <!-- Messages -->
+    {% for message in messages %}
+        <script>alert('{% if message.tags %}{{ message.tags|title }}:{% endif %} {{ message }}');</script>
+    {% endfor %}
+{% endif %}
+
+{% block content %}{% endblock %}
+{% include "layout/footer.html" %}
 
 <!-- Scripts -->
 <!-- Main -->

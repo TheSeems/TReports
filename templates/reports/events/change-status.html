@@ -1,0 +1,6 @@
+<h5 class="card-title">Изменение статуса</h5>
+<p class="card-text">
+    {% include "reports/report-status.html" with name=event.previous_status %}
+    <i class="fa ml-2 mr-2 fa-caret-right" aria-hidden="true"></i>
+    {% include "reports/report-status.html" with name=event.status %}
+</p>

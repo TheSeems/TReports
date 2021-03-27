@@ -22,6 +22,42 @@
     <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'martor/js/martor.min.js' %}"></script>
+    <script type="text/javascript">
+        let currentUrl = window.location.href;
+        const indices = [];
+        for (let i = 0; i < currentUrl.length; i++) if (currentUrl[i] === "/") indices.push(i);
+        currentUrl = currentUrl.substring(0, (indices[(indices.length) - 2]) + 1);
+        const url = new URL(currentUrl);
+
+        function toggle_value(name, toggled_value) {
+            if (!url.searchParams.has(name)) {
+                url.searchParams.set(name, toggled_value);
+            } else {
+                let arr = url.searchParams.get(name).split(',');
+                arr = arr.includes(toggled_value)
+                    ? arr.filter(function (value) {
+                        return value !== toggled_value;
+                    })
+                    : arr.concat(toggled_value);
+                arr = arr.filter(n => n !== "");
+
+                if (arr.length === 0) url.searchParams.delete(name)
+                else url.searchParams.set(toggled_value, arr.join(',').toString())
+            }
+
+            window.location.href = url.href
+        }
+
+        function toggle_tag(tag_id) {
+            toggle_value("tags", tag_id)
+        }
+
+        function toggle_filter(status) {
+            toggle_value("status", status)
+        }
+
+        $('.collapse').collapse('hide')
+    </script>
 {% endblock %}
 
 
@@ -29,30 +65,36 @@
 
 {% block content %}
     <div class="container report md-5">
-
         <h1 class="report-head ma-5">
             {{ report.name }}
-            <a href="{% url "admin:reports_report_change" report.id %}"><small>
-                #{{ report.id }}</small></a>
+            {% if user.is_staff %}
+                <a href="{% url "admin:reports_report_change" report.id %}"><small>
+                    #{{ report.id }}</small></a>
+            {% endif %}
         </h1>
 
         <div class="row report-meta">
-            <div class="col-md-4">
+            <div class="col-md">
+                <!-- Status -->
                 <h4>Статус</h4>
-                <span class="badge badge-{{ report.status }}">{{ report.status }}</span>
+                {% include "reports/report-status.html" with name=report.status %}
             </div>
-            <div class="col-md-4">
-                <h4>Теги</h4>
-                {% for tag in report.tags.all %}
-                    <span class="badge badge-dark">{{ tag }}</span>{% endfor %}
-            </div>
-            <div class="col-md-4">
-                <h4>
-                    Автор
-                    <h5 class="author">
-                        {% include "reports/ucard.html" with user=report.author %}
-                    </h5>
-                </h4>
+
+            {% if report.tags.all|length > 0 %}
+                <div class="col-md">
+                    <!-- Tags -->
+                    <h4>Теги</h4>
+                    {% for tag in report.tags.all %}
+                        <span class="mr-1 report-tag badge badge-dark"
+                              onclick="toggle_tag('{{ tag.id }}')">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="col-md">
+                <!-- Author -->
+                <h4>Автор</h4>
+                <span class="author">{% include "reports/ucard.html" with user=report.author %}</span>
             </div>
         </div>
 
@@ -69,16 +111,40 @@
         <p>{{ report.expect }}</p>
     </div>
 
-    <div class="container">
-        {% if report.comments.count > 0 %}
-            <h2 class="ma-5">Комментарии</h2>
-        {% endif %}
-        {% for comment in report.comments.all %}
-            {% include "reports/comment.html" %}
-        {% endfor %}
-    </div>
+    {% if report.events.all|length != 0 %}
+        <div class="container ma-5">
+            <!-- Events -->
+            <h3>События <a class="text-black-50 ml-2 fa fa-bars" data-toggle="collapse" href="#events" aria-expanded="false" aria-controls="events"></a></h3>
+            <div class="collapse" id="events">
+                {% for event in events %}
+                    <div class="card" style="margin-bottom: 1vh">
+                        <div class="card-body">
+                            {% if event.status %}
+                                {% include "reports/events/change-status.html" %}
+                            {% endif %}
+                            <p class="card-text">{{ event.date }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% if rest_events_count > 0 %}
+                <p class="text-muted">...и еще {{ rest_events_count }} событие(-ий)</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if report.comments.count > 0 %}
+        <div class="container">
+            <!-- Comments -->
+            <h2 class="ma-5">Комментарии <i class="fa fa-comments" aria-hidden="true"></i></h2>
+            {% for comment in report.comments.all %}
+                {% include "reports/comment.html" %}
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <div class="container ma-5">
+        <!-- Write a comment -->
         <form action="{% url "comment" %}" method="post">
             {{ form.content }}
             <input type="hidden" name="report_id" value="{{ report.id }}" id="id_report_id">

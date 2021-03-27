@@ -1,5 +1,8 @@
+from urllib.parse import urlencode
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse
@@ -9,6 +12,9 @@ from reports.models import Report
 
 
 def is_int(s):
+    if s is None:
+        return False
+
     try:
         int(s)
         return True
@@ -20,27 +26,26 @@ def normalize_page(page, count=0, default=1):
     if page is None:
         page = default
 
-    try:
-        page = int(page)
-    except ValueError:
-        page = default
-        return page, True
-
     if page < 1 or page > count // 5 + (0 if count % 5 == 0 else 1):
         page = default
-        return page, True
+        return page
 
-    return page, False
+    return page
 
 
-def rel(name, args=None):
+def custom_redirect(url_name, *args, **kwargs):
+    url = reverse(url_name, args=args)
+    params = urlencode(kwargs)
+    return HttpResponseRedirect(url + "?%s" % params)
+
+
+def redirect_reverse(name, args=None):
     if args is None:
         args = []
     return redirect(reverse(name, args=args))
 
 
-def filter_reports(request):
-    selection = Report.objects.all()
+def filter_reports_by_status(request, selection=Report.objects.all()):
     filters_applied = []
     if request.GET.get('status'):
         filters = Q()
@@ -48,43 +53,49 @@ def filter_reports(request):
             filters |= Q(status=name)
             filters_applied.append(name)
 
-        selection = selection.filter(filters)
+        selection = selection.filter(filters).distinct()
+
+    return selection, filters_applied
+
+
+def filter_reports_by_tag(request, selection=Report.objects.all()):
+    filters_applied = []
+    if request.GET.get('tags'):
+        filters = Q()
+        for tag_id in request.GET.get('tags').split(','):
+            if is_int(tag_id):
+                filters |= Q(tags=tag_id)
+                filters_applied.append(int(tag_id))
+
+        selection = selection.filter(filters).distinct()
 
     return selection, filters_applied
 
 
 @login_required
 def render_index(request, **kwargs):
-    selection, filters_applied = filter_reports(request)
+    selection, filters_applied = filter_reports_by_status(request)
+    selection, tag_filters_applied = filter_reports_by_tag(request, selection)
 
-    page, need_redirect = normalize_page(request.GET.get('page'), selection.count())
+    current_page = request.GET.get('page')
+    if not is_int(current_page):
+        current_page = None
+    else:
+        current_page = int(current_page)
 
-    if need_redirect:
-        import urllib.parse as urlparse
-        from urllib.parse import urlencode
-
-        parts = list(urlparse.urlparse(request.get_raw_uri()))
-        query = dict(urlparse.parse_qsl(parts[4]))
-
-        needed_page = 1
-        if request.GET.get('page') != "0":
-            needed_page = selection.count() // 5 + (0 if selection.count() % 5 == 0 else 1)
-
-        if needed_page == 0:
-            return redirect('/')
-
-        params = {'page': needed_page}
-        query.update(params)
-        parts[4] = urlencode(query)
-
-        return redirect(urlparse.urlunparse(parts))
+    bound_page = normalize_page(current_page, selection.count())
+    if current_page is not None and bound_page != current_page:
+        if bound_page == 1:
+            return redirect_reverse('index')
+        return custom_redirect('index', page=bound_page)
 
     return render(request, template_name='reports/index.html', context={
-        "reports": selection.order_by('-open')[(page - 1) * 5: page * 5],
+        "reports": selection.order_by('-open')[(bound_page - 1) * 5: bound_page * 5],
         "total": selection.count(),
         "fixed": selection.filter(status='F').count(),
         "your": selection.filter(author=request.user).count(),
-        "filters": filters_applied
+        "filters": filters_applied,
+        "tag_filters": tag_filters_applied
     })
 
 
@@ -92,9 +103,10 @@ def render_index(request, **kwargs):
 def render_report(request, rid=1):
     try:
         report = Report.objects.get(id=rid)
-
         return render(request, template_name='reports/full.html', context={
             "report": report,
+            "events": report.events.all()[:3],
+            "rest_events_count": report.events.all().count() - 3,
             "form": CommentForm
         })
     except Report.DoesNotExist:
@@ -117,11 +129,11 @@ def make_comment(request):
                 report.comments.add(comment)
                 report.save()
 
-                return rel('report', args=[report.id])
+                return redirect_reverse('report', args=[report.id])
             except Report.DoesNotExist:
-                return rel('index')
+                return redirect_reverse('index')
 
-    return rel('index')
+    return redirect_reverse('index')
 
 
 @login_required
@@ -138,7 +150,7 @@ def create_report(request):
                 report.tags.add(i)
 
             report.save()
-            return rel('report', args=[report.id])
+            return redirect_reverse('report', args=[report.id])
 
     return render(request, template_name='reports/create.html', context={
         "form": UserReportForm

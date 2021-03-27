@@ -5,17 +5,22 @@
     <link rel="stylesheet" href="{% static "main.css" %}">
 {% endblock %}
 
-{% block title %} Главная {% endblock %}
+{% block title %}Главная{% endblock %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="row ma-5">
-            <div class="col-md-3">{% include "layout/help-bar.html" %}</div>
+            <div class="col-md-3" style="margin-bottom: 5vh">{% include "layout/help-bar.html" %}</div>
             <div class="col-md-9">
-                <h1>Последние отчеты{% if request.GET.page %} <small>стр. {{ request.GET.page }}</small>{% endif %}</h1>
-                {% for report in reports %}
-                    {% include "reports/card.html" with report=report %}
-                {% endfor %}
+                {% if reports|length != 0 %}
+                    <h1>Последние отчеты{% if request.GET.page %} <small>стр. {{ request.GET.page }}</small>{% endif %}
+                    </h1>
+                    {% for report in reports %}
+                        {% include "reports/card.html" with report=report %}
+                    {% endfor %}
+                {% else %}
+                    <h1>Нет отчетов по заданным фильтрам</h1>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -49,7 +54,37 @@
                     arr = arr.concat(name);
                 }
 
-                url.searchParams.set("status", arr.join(',').toString())
+                arr = arr.filter(n => n !== "");
+                if (arr.length === 0) {
+                    url.searchParams.delete("status")
+                } else {
+                    url.searchParams.set("status", arr.join(',').toString())
+                }
+            }
+
+            window.location.href = url.href
+        }
+
+        function toggle_tag(tag_id) {
+            const url = new URL(window.location.href);
+            if (!url.searchParams.has("tags")) {
+                url.searchParams.set("tags", tag_id);
+            } else {
+                let arr = url.searchParams.get('tags').split(',');
+                if (arr.includes(tag_id)) {
+                    arr = arr.filter(function (value) {
+                        return value !== tag_id;
+                    })
+                } else {
+                    arr = arr.concat(tag_id);
+                }
+
+                arr = arr.filter(n => n !== "");
+                if (arr.length === 0) {
+                    url.searchParams.delete("tags")
+                } else {
+                    url.searchParams.set("tags", arr.join(',').toString())
+                }
             }
 
             window.location.href = url.href

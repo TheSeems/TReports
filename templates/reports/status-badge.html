@@ -1,3 +1,1 @@
-<span onclick="toggle_filter('{{ name }}')"
-      class="badge badge-{{ name }}">{{ name }}</span> - <p
-        class="inline {% if name in filters %}bold{% endif %}">{{ desc }}</p><br>
+{% include "reports/report-status.html" %} - <p class="inline {% if name in filters %}bold{% endif %}">{{ desc }}</p><br>

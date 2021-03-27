@@ -1,16 +1,21 @@
 <div class="card report-card">
     <div class="card-body">
-        <h4><a href="{% url "admin:reports_report_change" report.id %}"><small>
-            #{{ report.id }}</small></a>{% for tag in report.tags.all %}
-            <span class="badge badge-dark">{{ tag }}</span>
-        {% endfor %}
-            <span class="badge badge-{{ report.status }}">{{ report.status }}</span> <a
-                    href="/r/{{ report.id }}">{{ report.name }}</a></h4>
-        <div class="author">Автор: {% include "reports/ucard.html" with user=report.author %}</div>
+        <h4>
+            {% include "reports/report-status.html" with name=report.status %} <a href="/r/{{ report.id }}">{{ report.name }}</a>
+        </h4>
 
+        <div class="author">Автор: {% include "reports/ucard.html" with user=report.author %}</div>
         <p class="card-text">
             Создано: {{ report.open }}<br>
             Комментариев: {{ report.comments.all.count }}
+            {% for tag in report.tags.all %}
+                <span style="display: block" class="mr-1 mt-2 report-tag {% if tag.id in tag_filters %}text-primary{% endif %}"
+                      onclick="toggle_tag('{{ tag.id }}')">{{ tag }}</span>
+            {% endfor %}
+            {% if user.is_staff %}
+                <a style="display: block" class="mt-2" href="{% url "admin:reports_report_change" report.id %}"><small>
+                    #{{ report.id }}</small></a>
+            {% endif %}
         </p>
     </div>
 </div>

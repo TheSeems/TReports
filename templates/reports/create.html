@@ -26,14 +26,15 @@
 {% block title %} Создать {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
                 {% include "reports/creation-bar.html" %}
             </div>
-            <div class="col-md-10 ma-2">
+            <div class="col-md-8 ma-2">
                 <div class="container-fluid">
-                    <h1>Создание отчета</h1>
+                    <h1>Создание отчета <i role="button" onclick="toggleHint()" class="h4 fa fa-file ml-2"></i></h1>
                     <form action="{% url "create" %}" method="post" id="form">
                         <div class="form-group">
                             <label for="id_name">Название (Краткое описание)</label><input type="text" name="name"
@@ -46,7 +47,7 @@
                         {{ form.steps }}
                         {% csrf_token %}
 
-                        <div class="form-group">
+                        <div class="form-group mt-5">
                             <label for="id_expect">Ожидаемый результат</label>
                             <input type="text" name="expect" class="form-control form-control-lg" maxlength="100"
                                    required="" id="id_expect">
@@ -56,16 +57,22 @@
                             <input type="text" name="fact" class="form-control form-control-lg" maxlength="100"
                                    required="" id="id_fact">
                         </div>
-                        <label for="id_tags">Теги</label><select name="tags" required id="id_tags"
-                                                                 class="form-control" multiple>
-                        {% for x, y in form.tags.field.choices %}
-                            <option value="{{ x }}">{{ y }}</option>
-                        {% endfor %}
-                    </select>
+
+                        {% if form.tags.choices|length > 0 %}
+                            {# If any tags are present #}
+                            <label for="id_tags">Теги</label><select name="tags" id="id_tags"
+                                                                     class="form-control" multiple>
+                            {% for x, y in form.tags.field.choices %}
+                                <option value="{{ x }}">{{ y }}</option>
+                            {% endfor %}
+                        </select>
+                        {% endif %}
+
                         <button type="submit" id="send" class="btn btn-primary ma-2">Отправить</button>
                     </form>
                 </div>
             </div>
+            <div class="col-md-2"></div>
         </div>
     </div>
 {% endblock %}

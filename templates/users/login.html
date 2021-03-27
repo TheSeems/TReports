@@ -8,43 +8,44 @@
 {% block title %} Вход {% endblock %}
 
 {% block content %}
-    <div class="container-fluid" style="text-align: center">
+    <div class="container" style="text-align: center">
         <div class="row ma-5">
-            <div class="col-md-3">
-                <div class="container">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4>Система отчетов</h4>
-                            <p>Для работы с ней необходимо, чтобы администратор выдал Вам доступ.</p>
-                            <p>Репозиторий: <a href="https://github.com/theseems">GitHub</a>, автор <a
-                                    href="//theseems.ru">TheSeems</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-9">
-
-                <div class="container">
-                    <form action="{% url "login" %}" method="post">
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="mad-5">Авторизация</h3>
-                                <div class="form-group">
-                                    <label for="login">Логин</label>
-                                    <input type="text" name="login" class="form-control" id="login" placeholder="Логин">
-                                </div>
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="password">Пароль</label>
-                                    <input type="password" name="password" class="form-control" id="password"
-                                           placeholder="Пароль">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Войти</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="container">
+                <h1>Система отчетов</h1>
+                <p>Для работы с системой необходимо, чтобы администратор выдал Вам доступ.</p>
             </div>
         </div>
+
+        <div class="row ma-5">
+            <div class="container container-small">
+                <form action="{% url "login" %}" method="post">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="mad-5">Вход в систему</h3>
+                            <div class="form-group">
+                                <label class="sr-only" for="login" hidden>Логин</label>
+                                <input type="text" name="login" class="form-control" id="login" placeholder="Логин">
+                            </div>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label class="sr-only" for="password" hidden>Пароль</label>
+                                <input type="password" name="password" class="form-control" id="password"
+                                       placeholder="Пароль">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Войти</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row ma-5">
+                    <p>Репозиторий: <a href="https://github.com/theseems">GitHub</a>, автор <a
+                            href="//theseems.ru">TheSeems</a></p>
+                </div>
+            </div>
+        </footer>
     </div>
 {% endblock %}

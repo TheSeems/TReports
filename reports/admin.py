@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from reports.forms import ReportForm, CommentForm
-from reports.models import Report, Tag, Comment
+from reports.models import Report, Tag, Comment, ReportChangeStatusAction
 
 
 class ReportAdmin(admin.ModelAdmin):
@@ -17,3 +17,4 @@ class CommentAdmin(admin.ModelAdmin):
 admin.site.register(Report, ReportAdmin)
 admin.site.register(Tag)
 admin.site.register(Comment)
+admin.site.register(ReportChangeStatusAction)

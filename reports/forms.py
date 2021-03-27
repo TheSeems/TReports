@@ -21,6 +21,10 @@ class UserReportForm(ModelForm):
         fields = ('name', 'steps', 'fact', 'expect', 'tags')
 
 
+class ReportChangeForm(UserReportForm):
+    report_id = IntegerField()
+
+
 class CommentForm(ModelForm):
     content = MartorFormField()
     report_id = IntegerField()

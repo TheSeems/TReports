@@ -1,5 +1,5 @@
 # TReports
-Simple report system made with T(☕) and Django
+Simple report system made with ☕ and Django
 
 ## Main page
 ![Main Page](https://i.imgur.com/Hnmq8Bd.png)

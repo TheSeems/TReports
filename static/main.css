@@ -2,6 +2,10 @@
     display: inline-block;
 }
 
+:root {
+    --mdb-font-roboto: sans-serif !important;
+}
+
 .role-100 {
     border: 4px;
     background-color: rgba(255, 204, 203, .5);
@@ -10,26 +14,30 @@
     padding-right: 4px;
 }
 
+.badge-category:hover, .report-tag:hover {
+    cursor: pointer;
+}
+
 .badge-D {
-    background-color: red;
+    background-color: #AD1457;
     color: white;
 }
 
 .badge-W {
-    background-color: gray;
+    background-color: #424242;
 }
 
 .badge-L {
-    background-color: yellow;
+    background-color: #F57F17;
 }
 
 .badge-A {
-    background-color: green;
+    background-color: #33691E;
     color: white;
 }
 
 .badge-F {
-    background-color: blueviolet;
+    background-color: #311B92;
     color: white;
 }
 
@@ -74,6 +82,11 @@ Report
 
 .role-admin {
     opacity: 0.2;
+}
+
+.container-small {
+    margin: auto;
+    width: 40%;
 }
 
 img {
